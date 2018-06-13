@@ -1,0 +1,58 @@
+ID: TechEd2018CentralConsumptionUI
+_schema-version: '2.1'
+description: TechEd 2018 Central DB Consumption from SAPUI5
+version: 1.0.2018
+
+modules:
+ - name: web
+   type: html5
+   path: web
+   parameters:
+      host: teched2018-web
+      register-service-url: true
+      service-name: teched2018-web
+      service-url: '${default-url}'
+   requires:
+     - name: teched2018-ui5   
+     - name: xsjs
+       group: destinations
+       properties:
+         name: xsjs
+         url: ~{url}
+         forwardAuthToken: true
+# Configuration Approach Part 1
+#   requires:
+#     - name: destinations-for-teched
+#       list: destinations
+#       properties:
+#         name: ~{name}
+#         url: ~{url}
+#         forwardAuthToken: ~{forwardAuthToken}
+#       parameters:
+#         managed: true
+
+#Direct Injection of Destinations
+#   properties:
+#     destinations: '[{"name":"xsjs","url":"https://teched2018-xsjs.hanapm.local.com:30033","forwardAuthToken": true}]'
+
+resources:
+# Direct Defintion as a resource in-line or it could have been provided as User Provided Service
+ - name: xsjs
+   properties:
+     url: "https://teched2018-xsjs.hanapm.local.com:30033"
+
+#Configuration Approach Part 2
+# - name: destinations-for-teched
+#   type: configuration
+#   parameters:
+#     filter:
+#       purpose: teched2018-destination
+#     target:
+#       org: ${org}
+#       space: ${space}
+
+ - name: teched2018-ui5
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service: sapui5_sb
+     service-plan: sapui5-1.52
